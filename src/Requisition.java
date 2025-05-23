@@ -10,8 +10,6 @@ import java.util.Set;
 
 public class Requisition {
 
-    Set<String> moedasDesejadas = Set.of("BRL", "EUR", "USD", "CNY", "ARS", "BOB");
-
     public Map<String, Double> obterTaxaConversao(String moedaBase) {
         String API = "2f4f02b4758925ecc0261bab";
         URI base = URI.create("https://v6.exchangerate-api.com/v6/" + API + "/latest/" + moedaBase);
@@ -25,6 +23,8 @@ public class Requisition {
             HttpResponse<String> response = client
                     .send(request, HttpResponse.BodyHandlers.ofString());
             TaxaConversao taxaConversao = new Gson().fromJson(response.body(), TaxaConversao.class);
+
+            Set<String> moedasDesejadas = ValoresReferencia.getMoedasDesejadas();
 
             Map<String, Double> taxasFiltradas = new HashMap<>();
             for (String moeda : moedasDesejadas){
